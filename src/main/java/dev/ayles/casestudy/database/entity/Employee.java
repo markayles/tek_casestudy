@@ -19,6 +19,12 @@ public class Employee {
     @Column(name = "id")
     private Integer id;
 
+    @Column(name = "username")
+    private String username;
+
+    @Column(name = "password")
+    private String password;
+
     @Column(name = "first_name")
     private String firstName;
 
