@@ -9,15 +9,18 @@
 <p><strong>Updated Last: </strong> ${workOrder.updateTime}</p>
 
 <h1>Notes</h1> <a href="./addNote">Add Note</a>
-<c:forEach items="${workOrder.workOrderNotes}" var="note">
-    <p><strong>${note.createDate}</strong> by ${note.employee.firstName} ${note.employee.lastName} - ${note.note}</p>
-</c:forEach>
 
 <form action="/note/addNote" method="POST" id="noteForm">
     <input type="hidden" name="workOrderId" value="${workOrder.id}">
     <input type="text" name="addNote" id="addNote">
     <button type="submit">Add Note</button>
 </form>
+
+<div id="workOrderNotes">
+    <c:forEach items="${workOrder.workOrderNotes}" var="note">
+        <p><strong>${note.createDate}</strong> by ${note.employee.firstName} ${note.employee.lastName} - ${note.note}</p>
+    </c:forEach>
+</div>
 
 <script>
     $("#noteForm").submit(function(e) {
@@ -33,6 +36,16 @@
             data: form.serialize(), // serializes the form's elements.
             success: function(data)
             {
+                let _jsonString = "";
+                for(var key in data){
+                    //let _dateString = data[key].createDate.getFullYear() + "-" + data[key].createDate.getMonth() + "-" + data[key].createDate.getDay();
+
+                    _jsonString += "<p><strong>" + data[key].createDate +
+                        "</strong> by " + data[key].employee.firstName + " " + data[key].employee.lastName +
+                        " - " + data[key].note + "</p>";
+                }
+
+                $("#workOrderNotes").html(_jsonString);
                 console.log(data); // show response from the php script.
             }
         });

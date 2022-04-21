@@ -1,7 +1,11 @@
 package dev.ayles.casestudy.database.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonView;
+import dev.ayles.casestudy.JsonViews;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -14,11 +18,13 @@ import java.util.Date;
 @Entity
 @Table(name = "work_order_notes")
 public class WorkOrderNote {
+    @JsonView(JsonViews.WorkOrderNoteAJAX.class)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
+    @JsonView(JsonViews.WorkOrderNoteAJAX.class)
     @Column(name = "note")
     private String note;
 
@@ -27,11 +33,14 @@ public class WorkOrderNote {
     @JoinColumn(name = "work_order_id")
     private WorkOrder workOrder;
 
+    @JsonView(JsonViews.WorkOrderNoteAJAX.class)
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss", timezone="America/New_York")
+    @JsonView(JsonViews.WorkOrderNoteAJAX.class)
     @Column(name = "create_time")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate = new Date();
