@@ -37,6 +37,7 @@ public class WorkOrder {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "workOrder", cascade = CascadeType.ALL)
     private Set<WorkOrderNote> workOrderNotes;
 }

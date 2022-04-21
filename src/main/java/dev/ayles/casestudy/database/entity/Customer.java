@@ -24,9 +24,11 @@ public class Customer {
     @Column(name = "last_name")
     private String lastName;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "customer")
     private Set<Address> addresses;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "customer")
     private Set<WorkOrder> workOrders;
 }
