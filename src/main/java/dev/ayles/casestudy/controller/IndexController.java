@@ -31,7 +31,7 @@ public class IndexController {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    @GetMapping("/")
+    @GetMapping({"/", "/index"})
     public ModelAndView index() throws Exception {
         ModelAndView response = new ModelAndView();
 
