@@ -16,10 +16,18 @@ public class WorkOrderService {
 
     public List<WorkOrder> getAllWorkOrders(){
         List<WorkOrder> workOrderList = new ArrayList<>();
-
         workOrderList = workOrderRepository.findAll();
 
         return workOrderList;
     }
 
+    public WorkOrder getWorkOrderById(Integer id){
+        WorkOrder workOrder = workOrderRepository.findById(id);
+        
+        return workOrder;
+    }
+
+    public void save(WorkOrder workOrder){
+        workOrderRepository.save(workOrder);
+    }
 }
