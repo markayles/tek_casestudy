@@ -8,6 +8,7 @@ import dev.ayles.casestudy.service.EmployeeService;
 import dev.ayles.casestudy.service.WorkOrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -52,12 +53,9 @@ public class WorkOrderController {
         return response;
     }
 
-    @PostMapping(value = "/note/addNote", produces = "application/json")
-    @JsonView(JsonViews.WorkOrderNoteAJAX.class)
-    @ResponseBody
-    public List<WorkOrderNote> addNote(@RequestParam("workOrderId") Integer workOrderId,
-                                       @RequestParam("addNote") String note) throws Exception {
-        ModelAndView response = new ModelAndView();
+    @RequestMapping(value = "/note/addNote", produces = "application/json", method = RequestMethod.POST)
+    public ResponseEntity addNote(@RequestParam("workOrderId") Integer workOrderId,
+                                  @RequestParam("addNote") String note) throws Exception {
 
         WorkOrder workOrder = workOrderService.getWorkOrderById(workOrderId);
         List<WorkOrderNote> notes = workOrder.getWorkOrderNotes();
@@ -67,16 +65,24 @@ public class WorkOrderController {
         newNote.setCreateDate(new Date());
         newNote.setWorkOrder(workOrder);
         newNote.setEmployee(employeeService.getEmployeeById(1));
-//        notes.add(newNote);
+        notes.add(newNote);
 
-//        workOrderService.save(workOrder);
+        workOrderService.save(workOrder);
+
+        return ResponseEntity.ok().build();
+    }
 
 
+
+    @RequestMapping(value = "/note/getNotes/{workOrderId}", produces = "application/json", method = RequestMethod.GET)
+    @JsonView(JsonViews.WorkOrderNoteAJAX.class)
+    @ResponseBody
+    public List<WorkOrderNote> getNotesJSON(@PathVariable("workOrderId") Integer workOrderId) throws Exception {
+
+        WorkOrder workOrder = workOrderService.getWorkOrderById(workOrderId);
+        List<WorkOrderNote> notes = workOrder.getWorkOrderNotes();
         Collections.reverse(notes);
 
-        response.addObject("workOrder", workOrder);
-
-        response.setViewName("/workorder/view");
         return notes;
     }
 

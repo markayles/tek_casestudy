@@ -13,16 +13,35 @@
 <form action="/note/addNote" method="POST" id="noteForm">
     <input type="hidden" name="workOrderId" value="${workOrder.id}">
     <input type="text" name="addNote" id="addNote">
-    <button type="submit">Add Note</button>
+    <button type="submit">Add Note</button> <span id="addNoteError" style="color:red;">You can not add a blank note</span>
 </form>
 
 <div id="workOrderNotes">
-    <c:forEach items="${workOrder.workOrderNotes}" var="note">
-        <p><strong>${note.createDate}</strong> by ${note.employee.firstName} ${note.employee.lastName} - ${note.note}</p>
-    </c:forEach>
+<%--    <c:forEach items="${workOrder.workOrderNotes}" var="note">--%>
+<%--        <p><strong>${note.createDate}</strong> by ${note.employee.firstName} ${note.employee.lastName} - ${note.note}</p>--%>
+<%--    </c:forEach>--%>
 </div>
 
 <script>
+    function getWorkOrderNotes() {
+        $("#addNoteError").hide();
+        $.get("/note/getNotes/${workOrder.id}", function (data) {
+
+            let _jsonString = "";
+
+            for(var key in data){
+                _jsonString += "<p><strong>" + data[key].createDate +
+                            "</strong> by " + data[key].employee.firstName + " " + data[key].employee.lastName +
+                            " - " + data[key].note + "</p>";
+            }
+
+            $("#workOrderNotes").html(_jsonString);
+            console.log(data);
+        });
+    }
+    getWorkOrderNotes();
+
+
     $("#noteForm").submit(function(e) {
 
         e.preventDefault(); // avoid to execute the actual submit of the form.
@@ -30,25 +49,21 @@
         var form = $(this);
         var actionUrl = form.attr('action');
 
-        $.ajax({
-            type: "POST",
-            url: actionUrl,
-            data: form.serialize(), // serializes the form's elements.
-            success: function(data)
-            {
-                let _jsonString = "";
-                for(var key in data){
-                    //let _dateString = data[key].createDate.getFullYear() + "-" + data[key].createDate.getMonth() + "-" + data[key].createDate.getDay();
-
-                    _jsonString += "<p><strong>" + data[key].createDate +
-                        "</strong> by " + data[key].employee.firstName + " " + data[key].employee.lastName +
-                        " - " + data[key].note + "</p>";
+        if($("#addNote").val() != ""){
+            $.ajax({
+                type: "POST",
+                url: actionUrl,
+                data: form.serialize(), // serializes the form's elements.
+                success: function(data)
+                {
+                    $("#addNote").val("");
+                    getWorkOrderNotes();
                 }
+            });
+        }else{
+            $("#addNoteError").show();
+        }
 
-                $("#workOrderNotes").html(_jsonString);
-                console.log(data); // show response from the php script.
-            }
-        });
 
     });
 </script>
