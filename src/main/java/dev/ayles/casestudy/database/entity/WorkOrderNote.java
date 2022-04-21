@@ -19,6 +19,7 @@ public class WorkOrderNote {
     @Column(name = "id")
     private Integer id;
 
+    @Column(name = "note")
     private String note;
 
     @ManyToOne(fetch = FetchType.LAZY)
