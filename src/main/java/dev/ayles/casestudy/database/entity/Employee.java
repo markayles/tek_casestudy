@@ -1,10 +1,11 @@
 package dev.ayles.casestudy.database.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -38,6 +39,7 @@ public class Employee {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime = new Date();
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "employee")
-    private Set<WorkOrderNote> workOrderNotes;
+    private List<WorkOrderNote> workOrderNotes;
 }

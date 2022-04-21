@@ -14,9 +14,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -55,7 +56,7 @@ public class IndexController {
         WorkOrder workOrder = new WorkOrder();
         workOrder.setType("drain unclog");
         workOrder.setStatus("pending");
-        workOrder.setCreateDate(new Date());
+        workOrder.setCreateTime(new Date());
         workOrder.setUpdateTime(new Date());
         workOrder.setCustomer(customer);
         workOrderRepository.save(workOrder);
@@ -70,9 +71,9 @@ public class IndexController {
         for (int i = 0; i < 5; i++) {
             WorkOrderNote workOrderNote = new WorkOrderNote();
             workOrderNote.setNote("This is a random note (" + i + ")");
-            Set<WorkOrderNote> notes = workOrder.getWorkOrderNotes();
+            List<WorkOrderNote> notes = workOrder.getWorkOrderNotes();
             if(notes == null){
-                notes = new HashSet<>();
+                notes = new ArrayList<>();
             }
             notes.add(workOrderNote);
             workOrder.setWorkOrderNotes(notes);

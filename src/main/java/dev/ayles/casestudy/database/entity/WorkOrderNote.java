@@ -22,10 +22,12 @@ public class WorkOrderNote {
     @Column(name = "note")
     private String note;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "work_order_id")
     private WorkOrder workOrder;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
     private Employee employee;

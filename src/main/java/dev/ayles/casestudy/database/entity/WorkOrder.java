@@ -4,7 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -27,7 +27,7 @@ public class WorkOrder {
 
     @Column(name = "create_time")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date createDate = new Date();
+    private Date createTime = new Date();
 
     @Column(name = "update_time")
     @Temporal(TemporalType.TIMESTAMP)
@@ -39,5 +39,5 @@ public class WorkOrder {
 
     @ToString.Exclude
     @OneToMany(mappedBy = "workOrder", cascade = CascadeType.ALL)
-    private Set<WorkOrderNote> workOrderNotes;
+    private List<WorkOrderNote> workOrderNotes;
 }

@@ -3,7 +3,7 @@ package dev.ayles.casestudy.database.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -26,9 +26,9 @@ public class Customer {
 
     @ToString.Exclude
     @OneToMany(mappedBy = "customer")
-    private Set<Address> addresses;
+    private List<Address> addresses;
 
     @ToString.Exclude
     @OneToMany(mappedBy = "customer")
-    private Set<WorkOrder> workOrders;
+    private List<WorkOrder> workOrders;
 }
