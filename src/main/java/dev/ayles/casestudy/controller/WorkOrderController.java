@@ -39,7 +39,7 @@ public class WorkOrderController {
     }
 
     @PostMapping("/workorder/createSubmit")
-    public ModelAndView createWorkOrder(CreateWorkOrderForm form) throws Exception {
+    public ModelAndView createWorkOrderSubmit(CreateWorkOrderForm form) throws Exception {
         ModelAndView response = new ModelAndView();
 
         WorkOrder workOrder = new WorkOrder();
@@ -111,6 +111,34 @@ public class WorkOrderController {
         Collections.reverse(notes);
 
         return notes;
+    }
+
+    @GetMapping("/workorder/edit/{workOrderId}")
+    public ModelAndView editWorkOrder(@PathVariable("workOrderId") Integer workOrderId) throws Exception {
+        ModelAndView response = new ModelAndView();
+
+        WorkOrder workOrder = workOrderService.getWorkOrderById(workOrderId);
+        Collections.reverse(workOrder.getWorkOrderNotes());
+
+        response.addObject("workOrder", workOrder);
+        response.setViewName("/workorder/edit");
+        return response;
+    }
+
+    @PostMapping("/workorder/editSubmit")
+    public ModelAndView editWorkOrderSubmit(CreateWorkOrderForm form,
+                                            @RequestParam("id") Integer workOrderId) throws Exception {
+        ModelAndView response = new ModelAndView();
+
+        WorkOrder workOrder = workOrderService.getWorkOrderById(workOrderId);
+        workOrder.setType(form.getType());
+        workOrder.setStatus(form.getStatus());
+        workOrder.setCustomer(customerService.getCustomerById(form.getCustomerId()));
+
+        workOrderService.save(workOrder);
+
+        response.setViewName("redirect:/workorder/view/" + workOrderId);
+        return response;
     }
 
 }

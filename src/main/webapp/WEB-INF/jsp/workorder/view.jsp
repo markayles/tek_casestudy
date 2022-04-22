@@ -3,7 +3,8 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
-<a href="/workorder/all">Back to all</a>
+<a href="/workorder/all">Back to all</a><br>
+<a href="/workorder/edit/${workOrder.id}">Edit</a>
 
 <h1>Work Order #${workOrder.id}</h1>
 <p><strong>Work order status: </strong> ${workOrder.status}</p>
