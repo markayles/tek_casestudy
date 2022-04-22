@@ -1,22 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<!-- rewrite this as a case statement using c:choose -->
-<c:if test="${empty form.id}">
-    <h1>Sign Up</h1>
-</c:if>
-
-<c:if test="${not empty form.id}">
-    <h1>Edit User</h1>
-</c:if>
+<h1>Sign Up</h1>
 
 <form action="/login/registerSubmit" method="POST">
-    <input type="hidden" name="id" value="${form.id}">
-
-    Email <input type="text" name="email" id="emailId" value="${form.email}">
-    <c:forEach items='${bindingResult.getFieldErrors("email")}' var="error">
-        <div style="color:red;">${error.getDefaultMessage()}</div>
-    </c:forEach>
-    <br>
     First Name <input type="text" name="firstName" id="firstNameId" value="${form.firstName}">
     <c:forEach items='${bindingResult.getFieldErrors("firstName")}' var="error">
         <div style="color:red;">${error.getDefaultMessage()}</div>
@@ -38,21 +24,7 @@
         <div style="color:red;">${error.getDefaultMessage()}</div>
     </c:forEach>
     <br>
-    Check Box <input type="checkbox" name="checkbox">
-    <c:forEach items='${bindingResult.getFieldErrors("checkbox")}' var="error">
-        <div style="color:red;">${error.getDefaultMessage()}</div>
-    </c:forEach>
-    <br>
 
     <br>
     <button type="submit">Submit</button>
 </form>
-
-
-<c:if test="${bindingResult.hasErrors()}">
-    <br>
-
-    <c:forEach items="${bindingResult.getAllErrors()}" var="error">
-        <div style="color:red;">${error.getDefaultMessage()}</div>
-    </c:forEach>
-</c:if>

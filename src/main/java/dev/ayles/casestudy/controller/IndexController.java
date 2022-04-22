@@ -44,6 +44,7 @@ public class IndexController {
             String currentUserName = authentication.getName();
             response.addObject("username", currentUserName);
             response.addObject("authorities", authentication.getAuthorities());
+            response.addObject("principal", authentication.getPrincipal());
         }
 
 

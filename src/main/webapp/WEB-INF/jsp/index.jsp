@@ -13,6 +13,13 @@
         <p>${authority}</p>
     </c:forEach>
 
+<%--    <c:forEach items="${principal}" var="principal">--%>
+        <p>${principal}</p>
+<%--    </c:forEach>--%>
+
+
+
+
     <sec:authorize access="hasAuthority('ADMIN')">
         <h1>ADMIN BOIIIIIIIIIIIIIIIIIIII</h1>
     </sec:authorize>
@@ -31,3 +38,13 @@
 <a href="/customer/all">Customers</a><br>
 <a href="/workorder/all">Work Orders</a><br>
 <a href="/employee/all">Employees</a><br>
+
+<br>
+
+<sec:authorize access="!isAuthenticated()">
+    <a href="/login/login">Login</a><br>
+    <a href="/login/register">Register</a><br>
+</sec:authorize>
+<sec:authorize access="isAuthenticated()">
+    <a href="/login/logout">Logout</a><br>
+</sec:authorize>

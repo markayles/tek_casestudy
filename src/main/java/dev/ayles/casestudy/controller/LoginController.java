@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.Date;
+import java.util.Random;
 
 @Slf4j
 @Controller
@@ -25,10 +25,8 @@ public class LoginController {
 
     @Autowired
     private EmployeeRepository employeeRepository;
-
     @Autowired
     private EmployeeRoleRepository employeeRoleRepository;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -54,46 +52,47 @@ public class LoginController {
         return response;
     }
 
-    @RequestMapping(value = "/login/registerSubmit", method = { RequestMethod.POST })
+    @RequestMapping(value = "/login/registerSubmit", method = {RequestMethod.POST})
     public ModelAndView registerSubmit(@Valid RegisterForm form, BindingResult bindingResult) throws Exception {
         ModelAndView response = new ModelAndView();
 
-        log.info(form.toString());
+        if(!form.getPassword().equals(form.getConfirmPassword())){
+            bindingResult.rejectValue("password", null, "Passwords do not match.");
+            bindingResult.rejectValue("confirmPassword", null, "Passwords do not match.");
+        }
 
         if (bindingResult.hasErrors()) {
-
             for (ObjectError error : bindingResult.getAllErrors()) {
-                log.info( ((FieldError)error).getField() + " " +  error.getDefaultMessage());
+                log.info("Employee registration error: " + ((FieldError) error).getField() + " " + error.getDefaultMessage());
             }
 
-            // add the form back to the model so we can fill up the input fields
-            // so the employee can correct the input and does not have type it all again
             response.addObject("form", form);
-
-            // add the error list to the model
             response.addObject("bindingResult", bindingResult);
-
-            // because there is 1 or more error we do not want to process the logic below
-            // that will create a new employee in the database.   We want to show the register.jsp
             response.setViewName("login/registerForm");
             return response;
         }
 
-        // we first assume that we are going to try to load the employee from
-        // the database using the incoming id on the form
-        Employee employee = employeeRepository.findById(form.getId());
+        String username = form.getFirstName().substring(0, 1);
+        username += form.getLastName();
 
-        // if the employee is not null the know it is an edit
-        if (employee == null) {
-            // now, if the employee from the database is null then it means we did not
-            // find this employee.   Therefore, it is a create.
-            employee = new Employee();
-        }
+        Random random = new Random();
+        Employee e;
+        int randomInt;
 
-        employee.setUsername(form.getEmail());
+        // check if username already exists.. add different random numbers until it doesnt exist.
+        // In theory this could result in an infinite loop, but extremely unlikely
+        do {
+            randomInt = random.nextInt(99) + 10; // get a 2 digit number from 10-99
+            e = employeeRepository.findByUsername(username + randomInt);
+        } while (e != null);
+
+        username += randomInt;
+
+        Employee employee = new Employee();
+        employee.setUsername(username);
         employee.setFirstName(form.getFirstName());
         employee.setLastName(form.getLastName());
-        employee.setCreateTime(new Date());
+        employee.setTitle("New Employee");
 
         String password = passwordEncoder.encode(form.getPassword());
         employee.setPassword(password);
@@ -103,20 +102,14 @@ public class LoginController {
         // create and save the employee role object
         EmployeeRole userRole = new EmployeeRole();
         userRole.setEmployee(employee);
-        userRole.setEmployeeRole("USER");
+        userRole.setEmployeeRole("NEW_EMPLOYEE");
 
         employeeRoleRepository.save(userRole);
+        log.info("New employee user created with username " + username + " - " + form.toString());
 
-        log.info(form.toString());
-
-        // here instaed of showing a view, we want to redirect to the edit page
-        // the edit page will then be responsible for loading the employee from the
-        // database and dynamically creating the page
-        // when you use redirect: as part of the view name it triggers spring to tell the
-        // browser to do a redirect to the URL after the :    The big piece here to
-        // recognize that redirect: uses an actual URL rather than a view name path.
-        response.setViewName("redirect:/employee/edit/" + employee.getId());
-
+        response.addObject("employeeName", employee.getFirstName() + " " + employee.getLastName());
+        response.addObject("username", employee.getUsername());
+        response.setViewName("/login/registerAfter");
         return response;
     }
 }
