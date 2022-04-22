@@ -9,4 +9,5 @@
 <h1>Employee #${employee.id}</h1>
 <p><strong>Name: </strong> ${employee.firstName} ${employee.lastName}</p>
 <p><strong>Title: </strong> ${employee.title}</p>
+<p><strong>Username: </strong> ${employee.username}</p>
 <p><strong>Created: </strong> <fmt:formatDate type="both" pattern="EEE, MMM dd, yyyy HH:mm" value="${employee.createTime}" /></p>

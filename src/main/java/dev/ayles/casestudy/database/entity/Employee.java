@@ -25,6 +25,7 @@ public class Employee {
     @Column(name = "username")
     private String username;
 
+    @ToString.Exclude
     @Column(name = "password")
     private String password;
 
