@@ -39,7 +39,7 @@ public class WorkOrderNote {
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone="America/New_York")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "EEE, MMM dd, yyyy HH:mm", timezone="America/New_York")
     @JsonView(JsonViews.WorkOrderNoteAJAX.class)
     @Column(name = "create_time")
     @Temporal(TemporalType.TIMESTAMP)

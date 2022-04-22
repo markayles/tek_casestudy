@@ -9,4 +9,5 @@ public class CreateWorkOrderForm {
     private String type;
     private String status;
     private Integer customerId;
+    private Integer customerAddressId;
 }

@@ -26,7 +26,7 @@
     </select><br>
 
     Customer address:
-    <select name="customerAddress" id="customerAddress">
+    <select name="customerAddressId" id="customerAddressId">
     </select><br>
 
 
@@ -38,7 +38,7 @@
     $("#customerId").change(function(){
         let customerId = $("#customerId").val();
         $.get("/customer/getAddressesForCustomer/" + customerId, function(data){
-            $("#customerAddress").empty();
+            $("#customerAddressId").empty();
 
             let _selectOptions = "";
             $.each(data, function(key, value){
@@ -46,7 +46,7 @@
                     ") " + value.street + " " + value.city + ", " + value.state + " " + value.zip + "</option>";
             });
 
-            $("#customerAddress").append(_selectOptions);
+            $("#customerAddressId").append(_selectOptions);
         })
     });
 </script>

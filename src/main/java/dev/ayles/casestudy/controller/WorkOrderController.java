@@ -6,6 +6,7 @@ import dev.ayles.casestudy.database.entity.Customer;
 import dev.ayles.casestudy.database.entity.WorkOrder;
 import dev.ayles.casestudy.database.entity.WorkOrderNote;
 import dev.ayles.casestudy.form.CreateWorkOrderForm;
+import dev.ayles.casestudy.service.AddressService;
 import dev.ayles.casestudy.service.CustomerService;
 import dev.ayles.casestudy.service.EmployeeService;
 import dev.ayles.casestudy.service.WorkOrderService;
@@ -30,6 +31,8 @@ public class WorkOrderController {
     private EmployeeService employeeService;
     @Autowired
     private CustomerService customerService;
+    @Autowired
+    private AddressService addressService;
 
     @GetMapping("/workorder/create")
     public ModelAndView createWorkOrder() throws Exception {
@@ -50,6 +53,7 @@ public class WorkOrderController {
         workOrder.setType(form.getType());
         workOrder.setStatus(form.getStatus());
         workOrder.setCustomer(customerService.getCustomerById(form.getCustomerId()));
+        workOrder.setAddress(addressService.getAddressById(form.getCustomerAddressId()));
 
         workOrderService.save(workOrder);
 
@@ -141,6 +145,7 @@ public class WorkOrderController {
         workOrder.setType(form.getType());
         workOrder.setStatus(form.getStatus());
         workOrder.setCustomer(customerService.getCustomerById(form.getCustomerId()));
+        workOrder.setAddress(addressService.getAddressById(form.getCustomerAddressId()));
 
         workOrderService.save(workOrder);
 

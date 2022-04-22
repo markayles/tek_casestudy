@@ -11,8 +11,8 @@
 <p><strong>Work to be done: </strong> ${workOrder.type}</p>
 <p><strong>Customer: </strong> ${workOrder.customer}</p>
 <p><strong>Address: </strong> ${workOrder.address}</p>
-<p><strong>Created: </strong> <fmt:formatDate type="both" pattern="yyyy-MM-dd HH:mm" value="${workOrder.createTime}" /></p>
-<p><strong>Updated Last: </strong> <fmt:formatDate type="both" pattern="yyyy-MM-dd HH:mm" value="${workOrder.updateTime}" /></p>
+<p><strong>Created: </strong> <fmt:formatDate type="both" pattern="EEE, MMM dd, yyyy HH:mm" value="${workOrder.createTime}" /></p>
+<p><strong>Updated Last: </strong> <fmt:formatDate type="both" pattern="EEE, MMM dd, yyyy HH:mm" value="${workOrder.updateTime}" /></p>
 
 <h1>Notes</h1>
 
