@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
@@ -7,8 +8,8 @@
 <h1>Work Order #${workOrder.id}</h1>
 <p><strong>Work order status: </strong> ${workOrder.status}</p>
 <p><strong>Work to be done: </strong> ${workOrder.type}</p>
-<p><strong>Created: </strong> ${workOrder.createTime}</p>
-<p><strong>Updated Last: </strong> ${workOrder.updateTime}</p>
+<p><strong>Created: </strong> <fmt:formatDate type="both" pattern="yyyy-MM-dd HH:mm" value="${workOrder.createTime}" /></p>
+<p><strong>Updated Last: </strong> <fmt:formatDate type="both" pattern="yyyy-MM-dd HH:mm" value="${workOrder.updateTime}" /></p>
 
 <h1>Notes</h1>
 
