@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 import dev.ayles.casestudy.JsonViews;
 import dev.ayles.casestudy.database.entity.WorkOrder;
 import dev.ayles.casestudy.database.entity.WorkOrderNote;
+import dev.ayles.casestudy.form.CreateWorkOrderForm;
+import dev.ayles.casestudy.service.CustomerService;
 import dev.ayles.casestudy.service.EmployeeService;
 import dev.ayles.casestudy.service.WorkOrderService;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +27,33 @@ public class WorkOrderController {
     private WorkOrderService workOrderService;
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private CustomerService customerService;
+
+    @GetMapping("/workorder/create")
+    public ModelAndView createWorkOrder() throws Exception {
+        ModelAndView response = new ModelAndView();
+
+        response.setViewName("/workorder/create");
+        return response;
+    }
+
+    @PostMapping("/workorder/createSubmit")
+    public ModelAndView createWorkOrder(CreateWorkOrderForm form) throws Exception {
+        ModelAndView response = new ModelAndView();
+
+        WorkOrder workOrder = new WorkOrder();
+        workOrder.setType(form.getType());
+        workOrder.setStatus(form.getStatus());
+        workOrder.setCustomer(customerService.getCustomerById(form.getCustomerId()));
+
+        workOrderService.save(workOrder);
+
+        //response.addObject("workOrder", workOrder);
+
+        response.setViewName("redirect:/workorder/view/" + workOrder.getId());
+        return response;
+    }
 
     @GetMapping("/workorder/all")
     public ModelAndView viewAllWorkOrders() throws Exception {
@@ -37,7 +66,7 @@ public class WorkOrderController {
         return response;
     }
 
-    @GetMapping("/workorder/view/{workOrderId}/")
+    @GetMapping("/workorder/view/{workOrderId}")
     public ModelAndView viewWorkOrder(@PathVariable("workOrderId") Integer workOrderId) throws Exception {
         ModelAndView response = new ModelAndView();
 
@@ -71,8 +100,6 @@ public class WorkOrderController {
 
         return ResponseEntity.ok().build();
     }
-
-
 
     @RequestMapping(value = "/note/getNotes/{workOrderId}", produces = "application/json", method = RequestMethod.GET)
     @JsonView(JsonViews.WorkOrderNoteAJAX.class)
