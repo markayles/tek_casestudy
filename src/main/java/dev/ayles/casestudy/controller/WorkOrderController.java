@@ -2,6 +2,7 @@ package dev.ayles.casestudy.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import dev.ayles.casestudy.JsonViews;
+import dev.ayles.casestudy.database.entity.Customer;
 import dev.ayles.casestudy.database.entity.WorkOrder;
 import dev.ayles.casestudy.database.entity.WorkOrderNote;
 import dev.ayles.casestudy.form.CreateWorkOrderForm;
@@ -33,6 +34,9 @@ public class WorkOrderController {
     @GetMapping("/workorder/create")
     public ModelAndView createWorkOrder() throws Exception {
         ModelAndView response = new ModelAndView();
+
+        List<Customer> customers = customerService.getAllCustomers();
+        response.addObject("customers", customers);
 
         response.setViewName("/workorder/create");
         return response;
@@ -119,8 +123,11 @@ public class WorkOrderController {
 
         WorkOrder workOrder = workOrderService.getWorkOrderById(workOrderId);
         Collections.reverse(workOrder.getWorkOrderNotes());
-
         response.addObject("workOrder", workOrder);
+
+        List<Customer> customers = customerService.getAllCustomers();
+        response.addObject("customers", customers);
+
         response.setViewName("/workorder/edit");
         return response;
     }
