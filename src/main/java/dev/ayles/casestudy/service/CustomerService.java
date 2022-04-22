@@ -15,7 +15,7 @@ public class CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
 
-    public List<Customer> getAllWorkOrders(){
+    public List<Customer> getAllCustomers(){
         List<Customer> customerList = new ArrayList<>();
         customerList = customerRepository.findAll();
 

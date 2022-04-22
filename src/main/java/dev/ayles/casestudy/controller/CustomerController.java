@@ -36,7 +36,7 @@ public class CustomerController {
     public ModelAndView viewAllCustomers() throws Exception {
         ModelAndView response = new ModelAndView();
 
-        List<Customer> customers = customerService.getAllWorkOrders();
+        List<Customer> customers = customerService.getAllCustomers();
         response.addObject("customers", customers);
 
         response.setViewName("/customer/viewAll");
