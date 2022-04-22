@@ -13,13 +13,12 @@
         <div style="color:red;">${error.getDefaultMessage()}</div>
     </c:forEach>
     <br>
-    Password <input type="text" name="password" id="passwordId"  value="${form.password}">
+    Password <input type="text" name="password" id="passwordId" value="${form.password}">
     <c:forEach items='${bindingResult.getFieldErrors("password")}' var="error">
         <div style="color:red;">${error.getDefaultMessage()}</div>
     </c:forEach>
     <br>
-    Confirm Password <input type="text"
-                            name="confirmPassword" id="confirmPasswordId"  value="${form.confirmPassword}">
+    Confirm Password <input type="password" name="confirmPassword" id="confirmPasswordId" value="${form.confirmPassword}">
     <c:forEach items='${bindingResult.getFieldErrors("confirmPassword")}' var="error">
         <div style="color:red;">${error.getDefaultMessage()}</div>
     </c:forEach>
