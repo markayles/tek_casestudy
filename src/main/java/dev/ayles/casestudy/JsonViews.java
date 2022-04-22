@@ -4,4 +4,7 @@ public class JsonViews {
     public static class WorkOrderNoteAJAX {
 
     }
+    public static class CustomerAddressesAJAX {
+
+    }
 }

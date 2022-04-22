@@ -9,12 +9,14 @@
 
     Work order type:
     <input type="text" class="text" name="type" id="type"><br>
+
     Work order status:
     <select name="status" id="status">
         <option value="new" selected>New</option>
         <option value="inprogress">In Progress</option>
         <option value="complete">Complete</option>
     </select><br>
+
     For customer:
     <select name="customerId" id="customerId">
         <option value="" disabled selected>Select Customer</option>
@@ -23,7 +25,30 @@
         </c:forEach>
     </select><br>
 
+    Customer address:
+    <select name="customerAddress" id="customerAddress">
+    </select><br>
+
 
     <button type="submit">Create</button>
 
 </form>
+
+<script>
+    $("#customerId").change(function(){
+        let customerId = $("#customerId").val();
+        $.get("/customer/getAddressesForCustomer/" + customerId, function(data){
+            $("#customerAddress").empty();
+
+            let _selectOptions = "";
+            $.each(data, function(key, value){
+                _selectOptions += "<option value=\"" + value.id + "\">(" + value.id +
+                    ") " + value.street + " " + value.city + ", " + value.state + " " + value.zip + "</option>";
+            });
+
+            $("#customerAddress").append(_selectOptions);
+        })
+    });
+</script>
+
+

@@ -2,6 +2,7 @@ package dev.ayles.casestudy.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import dev.ayles.casestudy.JsonViews;
+import dev.ayles.casestudy.database.entity.Address;
 import dev.ayles.casestudy.database.entity.Customer;
 import dev.ayles.casestudy.database.entity.WorkOrder;
 import dev.ayles.casestudy.database.entity.WorkOrderNote;
@@ -102,6 +103,19 @@ public class CustomerController {
 
         response.setViewName("redirect:/customer/view/" + customerId);
         return response;
+    }
+
+    @RequestMapping(value = "/customer/getAddressesForCustomer/{customerId}", produces = "application/json", method = RequestMethod.GET)
+    @JsonView(JsonViews.CustomerAddressesAJAX.class)
+    @ResponseBody
+    public List<Address> getAddressesForCustomer(@PathVariable("customerId") Integer customerId) throws Exception {
+
+        Customer customer = customerService.getCustomerById(customerId);
+        List<Address> addresses = customer.getAddresses();
+
+        //Collections.reverse(addresses);
+
+        return addresses;
     }
 
 }
