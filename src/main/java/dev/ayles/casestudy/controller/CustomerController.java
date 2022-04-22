@@ -6,8 +6,10 @@ import dev.ayles.casestudy.database.entity.Address;
 import dev.ayles.casestudy.database.entity.Customer;
 import dev.ayles.casestudy.database.entity.WorkOrder;
 import dev.ayles.casestudy.database.entity.WorkOrderNote;
+import dev.ayles.casestudy.form.CreateAddressForm;
 import dev.ayles.casestudy.form.CreateCustomerForm;
 import dev.ayles.casestudy.form.CreateWorkOrderForm;
+import dev.ayles.casestudy.service.AddressService;
 import dev.ayles.casestudy.service.CustomerService;
 import dev.ayles.casestudy.service.EmployeeService;
 import dev.ayles.casestudy.service.WorkOrderService;
@@ -32,6 +34,8 @@ public class CustomerController {
     private EmployeeService employeeService;
     @Autowired
     private CustomerService customerService;
+    @Autowired
+    private AddressService addressService;
 
     @GetMapping("/customer/all")
     public ModelAndView viewAllCustomers() throws Exception {
@@ -66,7 +70,7 @@ public class CustomerController {
     }
 
     @PostMapping("/customer/createSubmit")
-    public ModelAndView createWorkOrderSubmit(CreateCustomerForm form) throws Exception {
+    public ModelAndView createCustomerSubmit(CreateCustomerForm form) throws Exception {
         ModelAndView response = new ModelAndView();
 
         Customer customer = new Customer();
@@ -75,12 +79,12 @@ public class CustomerController {
 
         customerService.save(customer);
 
-        response.setViewName("redirect:/customer/view/" + customer.getId());
+        response.setViewName("redirect:/customer/addAddress/" + customer.getId());
         return response;
     }
 
     @GetMapping("/customer/edit/{customerId}")
-    public ModelAndView editWorkOrder(@PathVariable("customerId") Integer customerId) throws Exception {
+    public ModelAndView editCustomer(@PathVariable("customerId") Integer customerId) throws Exception {
         ModelAndView response = new ModelAndView();
 
         Customer customer = customerService.getCustomerById(customerId);
@@ -91,7 +95,7 @@ public class CustomerController {
     }
 
     @PostMapping("/customer/editSubmit")
-    public ModelAndView editWorkOrderSubmit(CreateCustomerForm form,
+    public ModelAndView editCustomerSubmit(CreateCustomerForm form,
                                             @RequestParam("id") Integer customerId) throws Exception {
         ModelAndView response = new ModelAndView();
 
@@ -116,6 +120,34 @@ public class CustomerController {
         //Collections.reverse(addresses);
 
         return addresses;
+    }
+
+    @GetMapping("/customer/createAddress/{customerId}")
+    public ModelAndView createAddressForCustomer(@PathVariable("customerId") Integer customerId) throws Exception {
+        ModelAndView response = new ModelAndView();
+
+        Customer customer = customerService.getCustomerById(customerId);
+        response.addObject("customer", customer);
+
+        response.setViewName("/customer/createAddress");
+        return response;
+    }
+
+    @PostMapping("/customer/createAddressSubmit")
+    public ModelAndView createAddressSubmit(CreateAddressForm form) throws Exception {
+        ModelAndView response = new ModelAndView();
+
+        Address address = new Address();
+        address.setStreet(form.getStreet());
+        address.setCity(form.getCity());
+        address.setState(form.getState());
+        address.setZip(form.getZip());
+        address.setCustomer(customerService.getCustomerById(form.getCustomerId()));
+
+        addressService.save(address);
+
+        response.setViewName("redirect:/customer/view/" + form.getCustomerId());
+        return response;
     }
 
 }

@@ -10,6 +10,8 @@
 <p><strong>Name: </strong> ${customer.firstName} ${customer.lastName}</p>
 
 <h1>Addresses</h1>
+<a href="/customer/createAddress/${customer.id}">Add Address</a>
+
 
 <c:forEach items="${customer.addresses}" var="address">
     <p><strong>${address}</strong> <a href="/address/view/${address.id}/">View</a></p>
