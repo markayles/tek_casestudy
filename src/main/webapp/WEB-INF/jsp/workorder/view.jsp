@@ -9,6 +9,8 @@
 <h1>Work Order #${workOrder.id}</h1>
 <p><strong>Work order status: </strong> ${workOrder.status}</p>
 <p><strong>Work to be done: </strong> ${workOrder.type}</p>
+<p><strong>Customer: </strong> ${workOrder.customer}</p>
+<p><strong>Address: </strong> ${workOrder.address}</p>
 <p><strong>Created: </strong> <fmt:formatDate type="both" pattern="yyyy-MM-dd HH:mm" value="${workOrder.createTime}" /></p>
 <p><strong>Updated Last: </strong> <fmt:formatDate type="both" pattern="yyyy-MM-dd HH:mm" value="${workOrder.updateTime}" /></p>
 
@@ -40,7 +42,6 @@
             }
 
             $("#workOrderNotes").html(_jsonString);
-            console.log(data);
         });
     }
     getWorkOrderNotes();

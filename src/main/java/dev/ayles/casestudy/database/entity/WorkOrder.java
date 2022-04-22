@@ -37,6 +37,10 @@ public class WorkOrder {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id")
+    private Address address;
+
     @ToString.Exclude
     @OneToMany(mappedBy = "workOrder", cascade = CascadeType.ALL)
     private List<WorkOrderNote> workOrderNotes;
