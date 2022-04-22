@@ -18,6 +18,10 @@ public class RegisterForm {
     @NotBlank(message = "Last name is required")
     private String lastName;
 
+    private String title;
+
+    private String username;
+
     @Length(min = 3, message="Password must be at least 3 characters")
     @NotBlank(message = "Password is required")
     private String password;
