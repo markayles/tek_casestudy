@@ -44,6 +44,7 @@ public class Employee {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime = new Date();
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "employee")
     private List<WorkOrderNote> workOrderNotes;
 }
