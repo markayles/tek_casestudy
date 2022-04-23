@@ -5,6 +5,7 @@ import dev.ayles.casestudy.JsonViews;
 import dev.ayles.casestudy.database.entity.Address;
 import dev.ayles.casestudy.database.entity.Customer;
 import dev.ayles.casestudy.database.entity.Employee;
+import dev.ayles.casestudy.database.entity.EmployeeRole;
 import dev.ayles.casestudy.form.CreateAddressForm;
 import dev.ayles.casestudy.form.CreateCustomerForm;
 import dev.ayles.casestudy.form.RegisterForm;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -80,6 +82,45 @@ public class EmployeeController {
         employee.setLastName(form.getLastName());
         employee.setTitle(form.getTitle());
         employee.setUsername(form.getUsername());
+
+        // This is an awful way of checking if the role exists, but for the sake of time and lack of research, it will do for now
+        for (String s : form.getRoles()) {
+            boolean exists = false;
+            for (EmployeeRole role : employee.getRoles()) {
+                if (role.getEmployeeRole().equals(s)) {
+                    exists = true;
+                    break;
+                }
+            }
+
+            if (!exists) {
+                EmployeeRole newRole = new EmployeeRole();
+                newRole.setEmployeeRole(s);
+                newRole.setEmployee(employee);
+                employee.getRoles().add(newRole);
+                log.info("Adding role " + s + " to user " + employee.getUsername());
+            }
+        }
+
+        // Again, awful way of doing this. Also for the sake of using a lambda, it was done this way
+        List<EmployeeRole> rolesToRemove = new ArrayList<>();
+        employee.getRoles().forEach(employeeRole -> {
+            boolean exists = false;
+            for (String s : form.getRoles()) {
+                if (employeeRole.getEmployeeRole().equals(s)) {
+                    exists = true;
+                }
+            }
+
+            if (!exists) {
+                rolesToRemove.add(employeeRole);
+            }
+        });
+
+        for (EmployeeRole role : rolesToRemove) {
+            employee.getRoles().remove(employee.getRoles().indexOf(role));
+            log.info("Removing role " + role.getEmployeeRole() + " from user " + employee.getUsername());
+        }
 
         boolean passwordFail = false;
         if (!form.getPassword().isEmpty()) {

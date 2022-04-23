@@ -28,4 +28,6 @@ public class RegisterForm {
 
     @NotBlank(message = "Confirm Password is required")
     private String confirmPassword;
+
+    private String[] roles;
 }

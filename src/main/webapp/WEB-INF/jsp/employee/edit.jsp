@@ -24,5 +24,26 @@
         <span style="color:red;">${passwordError}</span><br>
     </c:if>
 
+    Roles
+    <input type="checkbox" id="role1" name="roles" value="NEW_EMPLOYEE">
+    <label for="role1">NEW EMPLOYEE</label>
+    <input type="checkbox" id="role2" name="roles" value="EMPLOYEE">
+    <label for="role2">EMPLOYEE</label>
+    <input type="checkbox" id="role3" name="roles" value="MANAGER">
+    <label for="role3">MANAGER</label>
+    <input type="checkbox" id="role4" name="roles" value="ADMIN">
+    <label for="role4">ADMIN</label>
+    <br>
+
     <button type="submit">Submit</button>
 </form>
+
+
+<script>
+
+    <c:forEach items="${employee.roles}" var="role">
+        console.log("${role.employeeRole} -> " + $("input[name='roles'][value='${role.employeeRole}']"));
+        $("input[name='roles'][value='${role.employeeRole}']").prop('checked', true);
+    </c:forEach>
+
+</script>

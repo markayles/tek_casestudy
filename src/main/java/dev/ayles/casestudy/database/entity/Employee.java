@@ -53,4 +53,8 @@ public class Employee {
     @ToString.Exclude
     @ManyToMany(mappedBy = "employees")
     private List<WorkOrder> workOrders = new ArrayList<>();
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<EmployeeRole> roles;
 }

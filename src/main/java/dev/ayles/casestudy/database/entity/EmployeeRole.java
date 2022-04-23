@@ -2,12 +2,14 @@ package dev.ayles.casestudy.database.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Getter
 @Setter
 @Entity
+@ToString
 @Table(name = "employee_roles")
 public class EmployeeRole {
 
@@ -16,6 +18,7 @@ public class EmployeeRole {
     @Column(name = "id")
     private Integer id;
 
+    @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;
