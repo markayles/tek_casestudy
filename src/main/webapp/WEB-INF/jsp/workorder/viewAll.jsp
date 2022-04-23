@@ -6,5 +6,5 @@
 <h1>All Work Orders</h1>
 
 <c:forEach items="${workOrders}" var="workOrder">
-    <p>${workOrder} <a href="/workorder/view/${workOrder.id}/">View</a></p>
+    <p><strong>#${workOrder.id}</strong> ${workOrder.status} - ${workOrder.type} <a href="/workorder/view/${workOrder.id}/">View</a></p>
 </c:forEach>
