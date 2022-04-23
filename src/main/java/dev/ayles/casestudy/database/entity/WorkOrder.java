@@ -3,6 +3,7 @@ package dev.ayles.casestudy.database.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -44,4 +45,11 @@ public class WorkOrder {
     @ToString.Exclude
     @OneToMany(mappedBy = "workOrder", cascade = CascadeType.ALL)
     private List<WorkOrderNote> workOrderNotes;
+
+    @ToString.Exclude
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "employee_workorder",
+            joinColumns = {@JoinColumn(name = "workorder_id")},
+            inverseJoinColumns = {@JoinColumn(name = "employee_id")})
+    private List<Employee> employees = new ArrayList<>();
 }

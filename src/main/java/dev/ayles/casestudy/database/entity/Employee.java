@@ -5,6 +5,7 @@ import dev.ayles.casestudy.JsonViews;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -48,4 +49,8 @@ public class Employee {
     @ToString.Exclude
     @OneToMany(mappedBy = "employee")
     private List<WorkOrderNote> workOrderNotes;
+
+    @ToString.Exclude
+    @ManyToMany(mappedBy = "employees")
+    private List<WorkOrder> workOrders = new ArrayList<>();
 }

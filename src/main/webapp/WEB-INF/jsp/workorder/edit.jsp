@@ -40,10 +40,22 @@
 
 </form>
 
+Assign Employee
+<form action="/workorder/addEmployee" method="POST" id="employeeForm">
+    <input type="hidden" name="workOrderId" value="${workOrder.id}">
+    <input type="text" name="employeeId" id="employeeId">
+    <button type="submit">Assign Employee</button>
+    <span id="employeeIdError" style="color:red;">You must enter an employee ID</span>
+    <span id="employeeIdSuccess" style="color:green;">Success!</span>
+</form>
+
 <script>
     $("#status option[value='${workOrder.status}']").prop('selected', true);
     $("#customerId option[value='${workOrder.customer.id}']").prop('selected', true);
     $("#customerAddressId option[value='${workOrder.address.id}']").prop('selected', true);
+
+    $("#employeeIdSuccess").hide();
+    $("#employeeIdError").hide();
 
 
     $("#customerId").change(function(){
@@ -59,5 +71,32 @@
 
             $("#customerAddressId").append(_selectOptions);
         })
+    });
+
+
+
+    $("#employeeForm").submit(function(e) {
+        e.preventDefault(); // avoid to execute the actual submit of the form.
+
+        var form = $(this);
+        var actionUrl = form.attr('action');
+
+        if($("#employeeId").val() != ""){
+            $.ajax({
+                type: "POST",
+                url: actionUrl,
+                data: form.serialize(), // serializes the form's elements.
+                success: function(data)
+                {
+                    $("#employeeId").val("");
+                    $("#employeeIdSuccess").show().delay(1500).fadeOut();
+                    $("#employeeIdError").hide();
+                }
+            });
+        }else{
+            $("#employeeIdError").show();
+        }
+
+
     });
 </script>

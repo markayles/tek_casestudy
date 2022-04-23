@@ -3,6 +3,7 @@ package dev.ayles.casestudy.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import dev.ayles.casestudy.JsonViews;
 import dev.ayles.casestudy.database.entity.Customer;
+import dev.ayles.casestudy.database.entity.Employee;
 import dev.ayles.casestudy.database.entity.WorkOrder;
 import dev.ayles.casestudy.database.entity.WorkOrderNote;
 import dev.ayles.casestudy.form.CreateWorkOrderForm;
@@ -153,4 +154,16 @@ public class WorkOrderController {
         return response;
     }
 
+    @RequestMapping(value = "/workorder/addEmployee", produces = "application/json", method = RequestMethod.POST)
+    public ResponseEntity addEmployee(@RequestParam("workOrderId") Integer workOrderId,
+                                  @RequestParam("employeeId") Integer employeeId) throws Exception {
+
+        Employee employee = employeeService.getEmployeeById(employeeId);
+        WorkOrder workOrder = workOrderService.getWorkOrderById(workOrderId);
+
+        workOrder.getEmployees().add(employee);
+        workOrderService.save(workOrder);
+
+        return ResponseEntity.ok().build();
+    }
 }
