@@ -26,8 +26,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/pub/**", "/error/**", "/login/**", "/index").permitAll()
-                .antMatchers("/admin/**", "/cart/**", "/user/**").authenticated()
+                .antMatchers("/error/**", "/login/**", "/index").permitAll()
+//                .antMatchers("/admin/**", "/cart/**", "/user/**").authenticated()
+                .antMatchers("/workorder/**").hasAuthority("EMPLOYEE")
+                .antMatchers("/customer/**").hasAuthority("MANAGER")
+                .antMatchers("/employee/**").hasAuthority("ADMIN")
                 .and()
                 .formLogin()
                 // this is the URL of the login page
@@ -44,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/index")
                 .and()
                 .exceptionHandling()
-                .accessDeniedPage("/error/404");
+                .accessDeniedPage("/error/403");
     }
 
     @Bean
