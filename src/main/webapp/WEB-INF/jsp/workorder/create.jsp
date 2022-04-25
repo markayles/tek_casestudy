@@ -1,37 +1,64 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<jsp:include page="../include/header.jsp" />
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <h1>Creating work order</h1>
 
 <form action="/workorder/createSubmit" method="POST">
-
-    Work order type:
-    <input type="text" class="text" name="type" id="type"><br>
-
-    Work order status:
-    <select name="status" id="status">
-        <option value="new" selected>New</option>
-        <option value="inprogress">In Progress</option>
-        <option value="complete">Complete</option>
-    </select><br>
-
-    For customer:
-    <select name="customerId" id="customerId">
-        <option value="" disabled selected>Select Customer</option>
-        <c:forEach items="${customers}" var="customer">
-            <option value="${customer.id}">(${customer.id}) ${customer.firstName} ${customer.lastName}</option>
-        </c:forEach>
-    </select><br>
-
-    Customer address:
-    <select name="customerAddressId" id="customerAddressId">
-    </select><br>
-
-
-    <button type="submit">Create</button>
-
+    <div class="row mb-3">
+        <label for="type" class="col-sm-2 col-form-label text-end">Type</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" id="type">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-2 col-form-label text-end">Status</label>
+        <div class="col-sm-5">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="status" id="inlineRadio1" value="new">
+                <label class="form-check-label" for="inlineRadio1">New</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="status" id="inlineRadio2" value="pending">
+                <label class="form-check-label" for="inlineRadio2">Pending</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="status" id="inlineRadio3" value="inprogress">
+                <label class="form-check-label" for="inlineRadio3">In Progress</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="status" id="inlineRadio4" value="complete">
+                <label class="form-check-label" for="inlineRadio4">Complete</label>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="customerId" class="col-sm-2 col-form-label text-end">Customer</label>
+        <div class="col-sm-3">
+            <select class="form-control" name="customer" id="customerId">
+                <option value="" disabled selected>Select Customer</option>
+                <c:forEach items="${customers}" var="customer">
+                    <option value="${customer.id}">(${customer.id}) ${customer.firstName} ${customer.lastName}</option>
+                </c:forEach>
+            </select>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="customerAddressId" class="col-sm-2 col-form-label text-end">Customer Address</label>
+        <div class="col-sm-3">
+            <select class="form-control" name="customer" id="customerAddressId">
+<%--                Intentionall blank - filled by js --%>
+            </select>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-3">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
 </form>
 
 <script>
@@ -50,5 +77,7 @@
         })
     });
 </script>
+
+<jsp:include page="../include/footer.jsp" />
 
 

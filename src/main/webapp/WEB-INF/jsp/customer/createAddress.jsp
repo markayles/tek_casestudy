@@ -1,3 +1,9 @@
+<jsp:include page="../include/header.jsp" />
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 <h1>Adding address for customer #${customer.id} - ${customer.firstName} ${customer.lastName}</h1>
 
 <form action="/customer/createAddressSubmit" method="POST">
@@ -11,3 +17,5 @@
     <button type="submit">Create</button>
 
 </form>
+
+<jsp:include page="../include/footer.jsp" />

@@ -1,7 +1,8 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+<jsp:include page="../include/header.jsp" />
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <a href="/workorder/all">Back to all</a><br>
 <a href="/workorder/edit/${workOrder.id}">Edit</a>
@@ -78,3 +79,5 @@
 
     });
 </script>
+
+<jsp:include page="../include/footer.jsp" />

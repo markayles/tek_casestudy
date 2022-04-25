@@ -1,0 +1,14 @@
+body {
+    padding-top: 72px; /* Padding to push content down for static navbar */
+    padding-bottom: 142px; /* Padding to push content up for static footer */
+
+
+    background-image: url("https://www.toptal.com/designers/subtlepatterns/uploads/45degreee_fabric.png");
+
+}
+
+#mainContainer{
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0px 0px 5px white;
+}
