@@ -21,7 +21,7 @@
 
 
     <sec:authorize access="hasAuthority('ADMIN')">
-        <h1>ADMIN BOIIIIIIIIIIIIIIIIIIII</h1>
+        <h1>ADMIN</h1>
     </sec:authorize>
     <sec:authorize access="hasAuthority('USER')">
         <h1>user BOI</h1>
