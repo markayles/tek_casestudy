@@ -37,7 +37,7 @@
     <div class="row mb-3">
         <label for="customerId" class="col-sm-2 col-form-label text-end">Customer</label>
         <div class="col-sm-3">
-            <select class="form-control" name="customer" id="customerId">
+            <select class="form-select" name="customer" id="customerId">
                 <option value="" disabled selected>Select Customer</option>
                 <c:forEach items="${customers}" var="customer">
                     <option value="${customer.id}">(${customer.id}) ${customer.firstName} ${customer.lastName}</option>
@@ -48,7 +48,7 @@
     <div class="row mb-3">
         <label for="customerAddressId" class="col-sm-2 col-form-label text-end">Customer Address</label>
         <div class="col-sm-3">
-            <select class="form-control" name="customer" id="customerAddressId">
+            <select class="form-select" name="customer" id="customerAddressId">
 <%--                Intentionall blank - filled by js --%>
             </select>
         </div>
@@ -64,6 +64,7 @@
 <script>
     $("#customerId").change(function(){
         let customerId = $("#customerId").val();
+        console.log("customer id " + customerId);
         $.get("/customer/getAddressesForCustomer/" + customerId, function(data){
             $("#customerAddressId").empty();
 

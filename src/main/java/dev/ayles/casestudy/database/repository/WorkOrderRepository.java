@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface WorkOrderRepository extends JpaRepository<WorkOrder, Long> {
 
-    public WorkOrder findById(@Param("employee_id") Integer id);
+    public WorkOrder findById(@Param("id") Integer id);
 
 }
