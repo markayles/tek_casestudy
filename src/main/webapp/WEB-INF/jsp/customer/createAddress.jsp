@@ -9,13 +9,36 @@
 <form action="/customer/createAddressSubmit" method="POST">
     <input type="hidden" name="customerId" id="customerId" value="${customer.id}">
 
-    Street: <input type="text" class="text" name="street" id="street"><br>
-    City: <input type="text" class="text" name="city" id="city"><br>
-    State: <input type="text" class="text" name="state" id="state"><br>
-    Zip: <input type="text" class="text" name="zip" id="zip"><br>
-
-    <button type="submit">Create</button>
-
+    <div class="row mb-3">
+        <label for="street" class="col-sm-2 col-form-label text-end">Street</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" name="street" id="street">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="city" class="col-sm-2 col-form-label text-end">City</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" name="city" id="city">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="state" class="col-sm-2 col-form-label text-end">State</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" name="state" id="state">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="zip" class="col-sm-2 col-form-label text-end">Zip Code</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" name="zip" id="zip">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-3">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
 </form>
 
 <jsp:include page="../include/footer.jsp" />

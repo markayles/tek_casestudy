@@ -11,11 +11,26 @@
 <form action="/customer/editSubmit" method="POST">
 
     <input type="hidden" name="id" id="id" value="${customer.id}">
-    First name: <input type="text" class="text" name="firstName" id="firstName" value="${customer.firstName}"><br>
-    Last name: <input type="text" class="text" name="lastName" id="lastName" value="${customer.lastName}"><br>
 
-    <button type="submit">Submit</button>
-
+    <div class="row mb-3">
+        <label for="firstName" class="col-sm-2 col-form-label text-end">First Name</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" name="firstName" id="firstName" value="${customer.firstName}">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="lastName" class="col-sm-2 col-form-label text-end">Last Name</label>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" name="lastName" id="lastName" value="${customer.lastName}">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-3">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
+    
 </form>
 
 <jsp:include page="../include/footer.jsp" />
