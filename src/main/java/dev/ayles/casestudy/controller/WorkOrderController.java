@@ -2,10 +2,7 @@ package dev.ayles.casestudy.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import dev.ayles.casestudy.JsonViews;
-import dev.ayles.casestudy.database.entity.Customer;
-import dev.ayles.casestudy.database.entity.Employee;
-import dev.ayles.casestudy.database.entity.WorkOrder;
-import dev.ayles.casestudy.database.entity.WorkOrderNote;
+import dev.ayles.casestudy.database.entity.*;
 import dev.ayles.casestudy.form.CreateWorkOrderForm;
 import dev.ayles.casestudy.service.AddressService;
 import dev.ayles.casestudy.service.CustomerService;
@@ -117,7 +114,7 @@ public class WorkOrderController {
     @RequestMapping(value = "/note/addNote", produces = "application/json", method = RequestMethod.POST)
     public ResponseEntity addNote(@RequestParam("workOrderId") Integer workOrderId,
                                   @RequestParam("addNote") String note) throws Exception {
-        workOrderService.addNote(note, workOrderId);
+        workOrderService.addNote(note, workOrderId, false);
 
         return ResponseEntity.ok().build();
     }
@@ -159,10 +156,27 @@ public class WorkOrderController {
         ModelAndView response = new ModelAndView();
 
         WorkOrder workOrder = workOrderService.getWorkOrderById(workOrderId);
-        workOrder.setType(form.getType());
-        workOrder.setStatus(form.getStatus());
-        workOrder.setCustomer(customerService.getCustomerById(form.getCustomerId()));
-        workOrder.setAddress(addressService.getAddressById(form.getCustomerAddressId()));
+        if(!workOrder.getType().equals(form.getType())){
+            workOrderService.addNote("Type changed to \"" + form.getType() + "\" (was: \""+workOrder.getType()+"\")", workOrderId, true);
+            workOrder.setType(form.getType());
+        }
+
+        if(!workOrder.getStatus().equals(form.getStatus())){
+            workOrderService.addNote("Status changed to \"" + form.getStatus() + "\" (was: \""+workOrder.getStatus()+"\")", workOrderId, true);
+            workOrder.setStatus(form.getStatus());
+        }
+
+        Customer newCustomer = customerService.getCustomerById(form.getCustomerId());
+        if(!workOrder.getCustomer().equals(newCustomer)){
+            workOrderService.addNote("Customer changed to (" + newCustomer.getId() + ") "+newCustomer.getFirstName()+" "+newCustomer.getLastName()+" (was: (" + workOrder.getCustomer().getId() + ") "+workOrder.getCustomer().getFirstName()+" "+workOrder.getCustomer().getLastName()+")", workOrderId, true);
+            workOrder.setCustomer(newCustomer);
+        }
+
+        Address newAddress = addressService.getAddressById(form.getCustomerAddressId());
+        if(!workOrder.getAddress().equals(newAddress)){
+            workOrderService.addNote("Address changed to (" + newAddress.getId() + ") "+newAddress.getStreet()+" "+newAddress.getCity()+", "+newAddress.getState()+" (was: ("+workOrder.getAddress().getId()+") "+workOrder.getAddress().getStreet()+" "+workOrder.getAddress().getCity()+", "+workOrder.getAddress().getState()+")", workOrderId, true);
+            workOrder.setAddress(newAddress);
+        }
 
         workOrderService.save(workOrder);
         log.info("Workorder modified: " + workOrder);
@@ -180,7 +194,9 @@ public class WorkOrderController {
 
         workOrder.getEmployees().add(employee);
         workOrderService.save(workOrder);
+
         log.info("Employee #" + employeeId + " assigned to workorder #" + workOrderId);
+        workOrderService.addNote("Employee ("+employee.getFirstName() +" "+employee.getLastName()+") assigned to work order", workOrderId, true);
 
         return ResponseEntity.ok().build();
     }
@@ -194,7 +210,9 @@ public class WorkOrderController {
 
         workOrder.getEmployees().remove(employee);
         workOrderService.save(workOrder);
+
         log.info("Employee #" + employeeId + " removed from workorder #" + workOrderId);
+        workOrderService.addNote("Employee ("+employee.getFirstName() +" "+employee.getLastName()+") removed from work order", workOrderId, true);
 
         return ResponseEntity.ok().build();
     }
