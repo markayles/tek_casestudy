@@ -80,7 +80,7 @@ public class CustomerController {
 
         customerService.save(customer);
 
-        response.setViewName("redirect:/customer/addAddress/" + customer.getId());
+        response.setViewName("redirect:/customer/createAddress/" + customer.getId());
         return response;
     }
 
