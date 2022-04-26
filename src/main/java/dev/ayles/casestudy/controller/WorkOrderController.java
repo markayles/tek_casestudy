@@ -76,6 +76,7 @@ public class WorkOrderController {
         workOrder.setAddress(addressService.getAddressById(form.getCustomerAddressId()));
 
         workOrderService.save(workOrder);
+        log.info("Work order created: " + workOrder);
 
         //response.addObject("workOrder", workOrder);
 
@@ -125,6 +126,7 @@ public class WorkOrderController {
         notes.add(newNote);
 
         workOrderService.save(workOrder);
+        log.info("Note added to workorder #"+ workOrderId +": " + newNote);
 
         return ResponseEntity.ok().build();
     }
@@ -168,6 +170,7 @@ public class WorkOrderController {
         workOrder.setAddress(addressService.getAddressById(form.getCustomerAddressId()));
 
         workOrderService.save(workOrder);
+        log.info("Workorder modified: " + workOrder);
 
         response.setViewName("redirect:/workorder/view/" + workOrderId);
         return response;
@@ -182,6 +185,7 @@ public class WorkOrderController {
 
         workOrder.getEmployees().add(employee);
         workOrderService.save(workOrder);
+        log.info("Employee #"+employeeId+" assigned to workorder #"+workOrderId);
 
         return ResponseEntity.ok().build();
     }

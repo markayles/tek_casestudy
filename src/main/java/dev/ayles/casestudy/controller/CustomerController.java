@@ -79,6 +79,7 @@ public class CustomerController {
         customer.setLastName(form.getLastName());
 
         customerService.save(customer);
+        log.info("New customer created: " + customer);
 
         response.setViewName("redirect:/customer/createAddress/" + customer.getId());
         return response;
@@ -105,6 +106,7 @@ public class CustomerController {
         customer.setLastName(form.getLastName());
 
         customerService.save(customer);
+        log.info("Customer modified: " + customer);
 
         response.setViewName("redirect:/customer/view/" + customerId);
         return response;
@@ -146,6 +148,7 @@ public class CustomerController {
         address.setCustomer(customerService.getCustomerById(form.getCustomerId()));
 
         addressService.save(address);
+        log.info("Address created for customer #"+ form.getCustomerId() +": " + address);
 
         response.setViewName("redirect:/customer/view/" + form.getCustomerId());
         return response;
