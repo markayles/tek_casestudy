@@ -43,7 +43,7 @@
                 </c:otherwise>
             </c:choose>
         >
-            <th scope="row">${workOrder.id}</th>
+            <td>${workOrder.id}</td>
             <td>${workOrder.status}</td>
             <td>${workOrder.type}</td>
             <td><fmt:formatDate type="both" pattern="EEE, MMM dd, yyyy HH:mm" value="${workOrder.createTime}" /></td>
