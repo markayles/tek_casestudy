@@ -82,10 +82,9 @@
         <div class="col-sm-2"></div>
         <div class="col-sm-3">
             <button type="submit" class="btn btn-primary">Assign Employee</button>
+            <span id="employeeIdSuccess" style="color:green;">Success!</span>
         </div>
     </div>
-    <span id="employeeIdError" style="color:red;">You must enter an employee ID</span>
-    <span id="employeeIdSuccess" style="color:green;">Success!</span>
 </form>
 
 <script>
@@ -93,7 +92,6 @@
     $("#customerId option[value='${workOrder.customer.id}']").prop('selected', true);
 
     $("#employeeIdSuccess").hide();
-    $("#employeeIdError").hide();
 
     function getCustomerAddresses() {
         let customerId = $("#customerId").val();
@@ -118,28 +116,21 @@
     });
 
     $("#employeeForm").submit(function(e) {
-        e.preventDefault(); // avoid to execute the actual submit of the form.
+        e.preventDefault();
 
         var form = $(this);
         var actionUrl = form.attr('action');
 
-        if($("#employeeId").val() != ""){
-            $.ajax({
-                type: "POST",
-                url: actionUrl,
-                data: form.serialize(), // serializes the form's elements.
-                success: function(data)
-                {
-                    $("#employeeId").val("");
-                    $("#employeeIdSuccess").show().delay(1500).fadeOut();
-                    $("#employeeIdError").hide();
-                }
-            });
-        }else{
-            $("#employeeIdError").show();
-        }
-
-
+        $.ajax({
+            type: "POST",
+            url: actionUrl,
+            data: form.serialize(), // serializes the form's elements.
+            success: function(data)
+            {
+                $("#employeeId").val("");
+                $("#employeeIdSuccess").show().delay(1500).fadeOut();
+            }
+        });
     });
 </script>
 
