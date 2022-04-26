@@ -15,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -115,19 +117,7 @@ public class WorkOrderController {
     @RequestMapping(value = "/note/addNote", produces = "application/json", method = RequestMethod.POST)
     public ResponseEntity addNote(@RequestParam("workOrderId") Integer workOrderId,
                                   @RequestParam("addNote") String note) throws Exception {
-
-        WorkOrder workOrder = workOrderService.getWorkOrderById(workOrderId);
-        List<WorkOrderNote> notes = workOrder.getWorkOrderNotes();
-
-        WorkOrderNote newNote = new WorkOrderNote();
-        newNote.setNote(note);
-        newNote.setCreateDate(new Date());
-        newNote.setWorkOrder(workOrder);
-        newNote.setEmployee(employeeService.getEmployeeById(1));
-        notes.add(newNote);
-
-        workOrderService.save(workOrder);
-        log.info("Note added to workorder #" + workOrderId + ": " + newNote);
+        workOrderService.addNote(note, workOrderId);
 
         return ResponseEntity.ok().build();
     }

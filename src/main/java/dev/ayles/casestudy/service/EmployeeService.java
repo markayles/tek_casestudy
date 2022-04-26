@@ -29,6 +29,12 @@ public class EmployeeService {
         return employee;
     }
 
+    public Employee getEmployeeByUsername(String username){
+        Employee employee = employeeRepository.findByUsername(username);
+
+        return employee;
+    }
+
     public void save(Employee employee){
         employeeRepository.save(employee);
     }
