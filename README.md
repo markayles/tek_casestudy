@@ -18,3 +18,6 @@ If I had more time with the project, some additional items I would have liked to
 * Filter and sort work orders
 
 There are more ideas, but these were the pressing items I would have liked to implement next.
+
+## Database Diagram
+![](https://i.imgur.com/wjhJdYE.png)
