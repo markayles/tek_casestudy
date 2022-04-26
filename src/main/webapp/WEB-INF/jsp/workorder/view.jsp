@@ -1,4 +1,4 @@
-<jsp:include page="../include/header.jsp" />
+<jsp:include page="../include/header.jsp"/>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -27,11 +27,13 @@
 </div>
 <div class="row mb-3">
     <div class="col-sm-2 text-end"><strong>Created At</strong></div>
-    <div class="col-sm-5"><fmt:formatDate type="both" pattern="EEE, MMM dd, yyyy HH:mm" value="${workOrder.createTime}" /></div>
+    <div class="col-sm-5"><fmt:formatDate type="both" pattern="EEE, MMM dd, yyyy HH:mm"
+                                          value="${workOrder.createTime}"/></div>
 </div>
 <div class="row mb-3">
     <div class="col-sm-2 text-end"><strong>Updated At</strong></div>
-    <div class="col-sm-5"><fmt:formatDate type="both" pattern="EEE, MMM dd, yyyy HH:mm" value="${workOrder.updateTime}" /></div>
+    <div class="col-sm-5"><fmt:formatDate type="both" pattern="EEE, MMM dd, yyyy HH:mm"
+                                          value="${workOrder.updateTime}"/></div>
 </div>
 
 <h2>Assigned Employees</h2>
@@ -40,7 +42,9 @@
     <c:forEach items="${workOrder.employees}" var="employee">
         <div class="row mb-3">
             <div class="col-sm-2 text-end"><strong>${employee.firstName} ${employee.lastName}</strong></div>
-            <div class="col-sm-5">${employee.title}</div>
+            <div class="col-sm-2">${employee.title}</div>
+            <div class="col-sm-1"><a class="removeEmployee" href="#" onClick="removeEmployee(${employee.id})">Remove</a>
+            </div>
         </div>
     </c:forEach>
 </c:if>
@@ -56,13 +60,14 @@
 <form action="/note/addNote" method="POST" id="noteForm">
     <input type="hidden" name="workOrderId" value="${workOrder.id}">
     <input type="text" name="addNote" id="addNote">
-    <button type="submit">Add Note</button> <span id="addNoteError" style="color:red;">You can not add a blank note</span>
+    <button type="submit">Add Note</button>
+    <span id="addNoteError" style="color:red;">You can not add a blank note</span>
 </form>
 
 <div id="workOrderNotes">
-<%--    <c:forEach items="${workOrder.workOrderNotes}" var="note">--%>
-<%--        <p><strong>${note.createDate}</strong> by ${note.employee.firstName} ${note.employee.lastName} - ${note.note}</p>--%>
-<%--    </c:forEach>--%>
+    <%--    <c:forEach items="${workOrder.workOrderNotes}" var="note">--%>
+    <%--        <p><strong>${note.createDate}</strong> by ${note.employee.firstName} ${note.employee.lastName} - ${note.note}</p>--%>
+    <%--    </c:forEach>--%>
 </div>
 
 <script>
@@ -72,42 +77,55 @@
 
             let _jsonString = "";
 
-            for(var key in data){
+            for (var key in data) {
                 _jsonString += "<div class=\"alert alert-secondary p-2 m-1\" role=\"alert\"><strong>" + data[key].createDate +
-                            "</strong> <em>by " + data[key].employee.firstName + "</em> " + data[key].employee.lastName +
-                            " - " + data[key].note + "</div>";
+                    "</strong> <em>by " + data[key].employee.firstName + "</em> " + data[key].employee.lastName +
+                    " - " + data[key].note + "</div>";
             }
 
             $("#workOrderNotes").html(_jsonString);
         });
     }
+
     getWorkOrderNotes();
 
 
-    $("#noteForm").submit(function(e) {
+    $("#noteForm").submit(function (e) {
 
         e.preventDefault(); // avoid to execute the actual submit of the form.
 
         var form = $(this);
         var actionUrl = form.attr('action');
 
-        if($("#addNote").val() != ""){
+        if ($("#addNote").val() != "") {
             $.ajax({
                 type: "POST",
                 url: actionUrl,
                 data: form.serialize(), // serializes the form's elements.
-                success: function(data)
-                {
+                success: function (data) {
                     $("#addNote").val("");
                     getWorkOrderNotes();
                 }
             });
-        }else{
+        } else {
             $("#addNoteError").show();
         }
 
-
     });
+
+    function removeEmployee(employeeId) {
+        $.ajax({
+            type: "POST",
+            url: "/workorder/removeEmployee",
+            data: {
+                workOrderId: "${workOrder.id}",
+                employeeId: employeeId
+            },
+            success: function (data) {
+                location.reload();
+            }
+        });
+    }
 </script>
 
-<jsp:include page="../include/footer.jsp" />
+<jsp:include page="../include/footer.jsp"/>

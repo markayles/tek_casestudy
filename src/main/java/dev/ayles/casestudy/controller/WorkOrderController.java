@@ -194,4 +194,18 @@ public class WorkOrderController {
 
         return ResponseEntity.ok().build();
     }
+
+    @RequestMapping(value = "/workorder/removeEmployee", produces = "application/json", method = RequestMethod.POST)
+    public ResponseEntity removeEmployee(@RequestParam("workOrderId") Integer workOrderId,
+                                      @RequestParam("employeeId") Integer employeeId) throws Exception {
+
+        Employee employee = employeeService.getEmployeeById(employeeId);
+        WorkOrder workOrder = workOrderService.getWorkOrderById(workOrderId);
+
+        workOrder.getEmployees().remove(employee);
+        workOrderService.save(workOrder);
+        log.info("Employee #" + employeeId + " removed from workorder #" + workOrderId);
+
+        return ResponseEntity.ok().build();
+    }
 }
