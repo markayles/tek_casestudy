@@ -4,18 +4,31 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<a href="/employee/all">Back to all</a><br>
-<a href="/employee/edit/${employee.id}">Edit</a>
+<a href="/employee/all">Back to all</a> / <a href="/employee/edit/${employee.id}">Edit</a>
 
 <h1>Employee #${employee.id}</h1>
-<p><strong>Name: </strong> ${employee.firstName} ${employee.lastName}</p>
-<p><strong>Title: </strong> ${employee.title}</p>
-<p><strong>Username: </strong> ${employee.username}</p>
-<p><strong>Roles: </strong>
-<c:forEach items="${employee.roles}" var="role">
-    <p>&emsp;${role.employeeRole}</p>
-</c:forEach>
-</p>
-<p><strong>Created: </strong> <fmt:formatDate type="both" pattern="EEE, MMM dd, yyyy HH:mm" value="${employee.createTime}" /></p>
+<div class="row mb-3">
+    <div class="col-sm-2 text-end"><strong>Name</strong></div>
+    <div class="col-sm-5">${employee.firstName} ${employee.lastName}</div>
+</div>
+<div class="row mb-3">
+    <div class="col-sm-2 text-end"><strong>Title</strong></div>
+    <div class="col-sm-5">${employee.title}</div>
+</div>
+<div class="row mb-3">
+    <div class="col-sm-2 text-end"><strong>Username</strong></div>
+    <div class="col-sm-5">${employee.username}</div>
+</div>
+<div class="row mb-3">
+    <div class="col-sm-2 text-end"><strong>Roles</strong></div>
+    <div class="col-sm-5">
+    <c:forEach items="${employee.roles}" var="role">
+        <p>[${role.employeeRole}]</p>
+    </c:forEach></div>
+</div>
+<div class="row mb-3">
+    <div class="col-sm-2 text-end"><strong>Created</strong></div>
+    <div class="col-sm-5"><fmt:formatDate type="both" pattern="EEE, MMM dd, yyyy HH:mm" value="${employee.createTime}" /></div>
+</div>
 
 <jsp:include page="../include/footer.jsp" />

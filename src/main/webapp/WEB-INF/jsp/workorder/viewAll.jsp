@@ -13,17 +13,17 @@
         <tr>
             <th scope="col" style="width: 5%">ID</th>
             <th scope="col" style="width: 10%">Status</th>
-            <th scope="col" style="width: 25%">Type</th>
+            <th scope="col" style="width: 15%">Type</th>
             <th scope="col" style="width: 20%">Created</th>
             <th scope="col" style="width: 15%">Customer</th>
             <th scope="col" style="width: 20%">Address</th>
+            <th scope="col" style="width: 10%">Assigned</th>
             <th scope="col" style="width: 5%"></th>
         </tr>
     </thead>
     <tbody>
 
     <c:forEach items="${workOrders}" var="workOrder">
-<%--        <p><strong>#${workOrder.id}</strong> ${workOrder.status} - ${workOrder.type} <a href="/workorder/view/${workOrder.id}/">View</a></p>--%>
         <tr
             <c:choose>
                 <c:when test = "${workOrder.status == 'pending'}">
@@ -48,7 +48,8 @@
             <td>${workOrder.type}</td>
             <td><fmt:formatDate type="both" pattern="EEE, MMM dd, yyyy HH:mm" value="${workOrder.createTime}" /></td>
             <td>${workOrder.customer.firstName} ${workOrder.customer.lastName}</td>
-            <td>${workOrder.address.street} ${workOrder.address.city} ${workOrder.address.state}</td>
+            <td>${workOrder.address.street} ${workOrder.address.city}, ${workOrder.address.state}</td>
+            <td>${workOrder.employees.size()}</td>
             <td><a href="/workorder/view/${workOrder.id}/">View</a></td>
         </tr>
     </c:forEach>
