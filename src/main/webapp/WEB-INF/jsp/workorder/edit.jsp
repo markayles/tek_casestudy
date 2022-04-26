@@ -68,9 +68,14 @@
 <form action="/workorder/addEmployee" method="POST" id="employeeForm">
     <input type="hidden" name="workOrderId" value="${workOrder.id}">
     <div class="row mb-3">
-        <label for="employeeId" class="col-sm-2 col-form-label text-end">Assign Employee (ID)</label>
+        <label for="employeeId" class="col-sm-2 col-form-label text-end">Assign Employee</label>
         <div class="col-sm-3">
-            <input type="text" class="form-control" name="employeeId" id="employeeId">
+            <select class="form-select" name="employeeId" id="employeeId">
+                <option value="" disabled selected>Select Employee</option>
+                <c:forEach items="${employees}" var="employee">
+                    <option value="${employee.id}">(${employee.id}) ${employee.firstName} ${employee.lastName} - ${employee.title}</option>
+                </c:forEach>
+            </select>
         </div>
     </div>
     <div class="row mb-3">

@@ -26,6 +26,7 @@ import javax.validation.Valid;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @PreAuthorize("hasAuthority('EMPLOYEE')")
 @Slf4j
@@ -56,7 +57,7 @@ public class WorkOrderController {
     public ModelAndView createWorkOrderSubmit(@Valid CreateWorkOrderForm form, BindingResult bindingResult) throws Exception {
         ModelAndView response = new ModelAndView();
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             for (ObjectError error : bindingResult.getAllErrors()) {
                 log.info("Work order creation error: " + ((FieldError) error).getField() + " " + error.getDefaultMessage());
             }
@@ -126,7 +127,7 @@ public class WorkOrderController {
         notes.add(newNote);
 
         workOrderService.save(workOrder);
-        log.info("Note added to workorder #"+ workOrderId +": " + newNote);
+        log.info("Note added to workorder #" + workOrderId + ": " + newNote);
 
         return ResponseEntity.ok().build();
     }
@@ -154,6 +155,10 @@ public class WorkOrderController {
         List<Customer> customers = customerService.getAllCustomers();
         response.addObject("customers", customers);
 
+        List<Employee> employees = employeeService.getAllEmployees();
+        List<Employee> nonAssigned = employees.stream().filter(e -> !e.getWorkOrders().contains(workOrder)).collect(Collectors.toList());
+        response.addObject("employees", nonAssigned);
+
         response.setViewName("/workorder/edit");
         return response;
     }
@@ -178,14 +183,14 @@ public class WorkOrderController {
 
     @RequestMapping(value = "/workorder/addEmployee", produces = "application/json", method = RequestMethod.POST)
     public ResponseEntity addEmployee(@RequestParam("workOrderId") Integer workOrderId,
-                                  @RequestParam("employeeId") Integer employeeId) throws Exception {
+                                      @RequestParam("employeeId") Integer employeeId) throws Exception {
 
         Employee employee = employeeService.getEmployeeById(employeeId);
         WorkOrder workOrder = workOrderService.getWorkOrderById(workOrderId);
 
         workOrder.getEmployees().add(employee);
         workOrderService.save(workOrder);
-        log.info("Employee #"+employeeId+" assigned to workorder #"+workOrderId);
+        log.info("Employee #" + employeeId + " assigned to workorder #" + workOrderId);
 
         return ResponseEntity.ok().build();
     }
