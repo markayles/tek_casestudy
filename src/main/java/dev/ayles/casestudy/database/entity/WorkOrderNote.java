@@ -25,7 +25,6 @@ public class WorkOrderNote {
     private Integer id;
 
     @JsonView(JsonViews.WorkOrderNoteAJAX.class)
-    @Column(name = "note")
     private String note;
 
     @ToString.Exclude
@@ -38,6 +37,10 @@ public class WorkOrderNote {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
     private Employee employee;
+
+    @JsonView(JsonViews.WorkOrderNoteAJAX.class)
+    @Column(name = "automated", columnDefinition = "TINYINT")
+    private Boolean automated;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "EEE, MMM dd, yyyy HH:mm", timezone="America/New_York")
     @JsonView(JsonViews.WorkOrderNoteAJAX.class)

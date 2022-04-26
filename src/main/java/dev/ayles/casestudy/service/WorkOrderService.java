@@ -41,7 +41,7 @@ public class WorkOrderService {
         workOrderRepository.save(workOrder);
     }
 
-    public void addNote(String note, Integer workOrderId){
+    public void addNote(String note, Integer workOrderId, boolean automated){
         WorkOrder workOrder = this.getWorkOrderById(workOrderId);
         List<WorkOrderNote> notes = workOrder.getWorkOrderNotes();
 
@@ -53,6 +53,7 @@ public class WorkOrderService {
         newNote.setCreateDate(new Date());
         newNote.setWorkOrder(workOrder);
         newNote.setEmployee(e);
+        newNote.setAutomated(automated);
         notes.add(newNote);
 
         this.save(workOrder);

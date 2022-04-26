@@ -43,7 +43,7 @@
         <div class="row mb-3">
             <div class="col-sm-2 text-end"><strong>${employee.firstName} ${employee.lastName}</strong></div>
             <div class="col-sm-2">${employee.title}</div>
-            <div class="col-sm-1"><a class="removeEmployee" href="#" onClick="removeEmployee(${employee.id})">Remove</a>
+            <div class="col-sm-1"><a class="removeEmployee" href="javascript:void(0);" onClick="removeEmployee(${employee.id})">Remove</a>
             </div>
         </div>
     </c:forEach>
@@ -78,7 +78,12 @@
             let _jsonString = "";
 
             for (var key in data) {
-                _jsonString += "<div class=\"alert alert-secondary p-2 m-1\" role=\"alert\"><strong>" + data[key].createDate +
+                let assignedClass = "alert-secondary";
+                if(data[key].automated){
+                    assignedClass = "alert-primary";
+                }
+
+                _jsonString += "<div class=\"alert "+assignedClass+" p-2 m-1\" role=\"alert\"><strong>" + data[key].createDate +
                     "</strong> <em>by " + data[key].employee.firstName + "</em> " + data[key].employee.lastName +
                     " - " + data[key].note + "</div>";
             }
