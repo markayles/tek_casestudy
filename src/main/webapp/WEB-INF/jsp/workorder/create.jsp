@@ -10,7 +10,12 @@
     <div class="row mb-3">
         <label for="type" class="col-sm-2 col-form-label text-end">Type</label>
         <div class="col-sm-3">
-            <input type="text" class="form-control" id="type">
+            <input type="text" class="form-control" name="type" id="type" value="${form.type}">
+        </div>
+        <div class="col-sm-4">
+            <c:forEach items='${bindingResult.getFieldErrors("type")}' var="error">
+                <div style="color:red;">- ${error.getDefaultMessage()}</div>
+            </c:forEach>
         </div>
     </div>
     <div class="row mb-3">
@@ -33,24 +38,39 @@
                 <label class="form-check-label" for="inlineRadio4">Complete</label>
             </div>
         </div>
+        <div class="col-sm-4">
+            <c:forEach items='${bindingResult.getFieldErrors("status")}' var="error">
+                <div style="color:red;">- ${error.getDefaultMessage()}</div>
+            </c:forEach>
+        </div>
     </div>
     <div class="row mb-3">
         <label for="customerId" class="col-sm-2 col-form-label text-end">Customer</label>
         <div class="col-sm-3">
-            <select class="form-select" name="customer" id="customerId">
+            <select class="form-select" name="customerId" id="customerId">
                 <option value="" disabled selected>Select Customer</option>
                 <c:forEach items="${customers}" var="customer">
                     <option value="${customer.id}">(${customer.id}) ${customer.firstName} ${customer.lastName}</option>
                 </c:forEach>
             </select>
         </div>
+        <div class="col-sm-4">
+            <c:forEach items='${bindingResult.getFieldErrors("customerId")}' var="error">
+                <div style="color:red;">- ${error.getDefaultMessage()}</div>
+            </c:forEach>
+        </div>
     </div>
     <div class="row mb-3">
         <label for="customerAddressId" class="col-sm-2 col-form-label text-end">Customer Address</label>
         <div class="col-sm-3">
-            <select class="form-select" name="customer" id="customerAddressId">
+            <select class="form-select" name="customerAddressId" id="customerAddressId">
 <%--                Intentionall blank - filled by js --%>
             </select>
+        </div>
+        <div class="col-sm-4">
+            <c:forEach items='${bindingResult.getFieldErrors("customerAddressId")}' var="error">
+                <div style="color:red;">- ${error.getDefaultMessage()}</div>
+            </c:forEach>
         </div>
     </div>
     <div class="row mb-3">
@@ -62,9 +82,11 @@
 </form>
 
 <script>
-    $("#customerId").change(function(){
+    $("input[name='status'][value='${form.status}']").prop('checked', true);
+    $("#customerId option[value='${form.customerId}']").prop('selected', true);
+
+    function getCustomerAddresses() {
         let customerId = $("#customerId").val();
-        console.log("customer id " + customerId);
         $.get("/customer/getAddressesForCustomer/" + customerId, function(data){
             $("#customerAddressId").empty();
 
@@ -76,7 +98,17 @@
 
             $("#customerAddressId").append(_selectOptions);
         })
+    }
+
+    if("${form.customerId}" != 0){
+        getCustomerAddresses();
+    }
+
+    $("#customerId").change(function(){
+        getCustomerAddresses();
     });
+
+    $("#customerAddressId option[value='${form.customerAddressId}']").prop('selected', true);
 </script>
 
 <jsp:include page="../include/footer.jsp" />

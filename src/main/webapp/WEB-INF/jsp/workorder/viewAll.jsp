@@ -27,7 +27,7 @@
         <tr
             <c:choose>
                 <c:when test = "${workOrder.status == 'pending'}">
-                    class="table-warning"
+                    class="table-primary"
                 </c:when>
                 <c:when test = "${workOrder.status == 'complete'}">
                     class="table-secondary"
@@ -36,7 +36,7 @@
                     class="table-success"
                 </c:when>
                 <c:when test = "${workOrder.status == 'inprogress'}">
-                    class="table-danger"
+                    class="table-warning"
                 </c:when>
                 <c:otherwise>
                     No comment sir...

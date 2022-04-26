@@ -4,22 +4,52 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<a href="/workorder/all">Back to all</a><br>
+<a href="/workorder/all">Back to all</a> /
 <a href="/workorder/edit/${workOrder.id}">Edit</a>
 
 <h1>Work Order #${workOrder.id}</h1>
-<p><strong>Work order status: </strong> ${workOrder.status}</p>
-<p><strong>Work to be done: </strong> ${workOrder.type}</p>
-<p><strong>Customer: </strong> ${workOrder.customer}</p>
-<p><strong>Address: </strong> ${workOrder.address}</p>
-<p><strong>Created: </strong> <fmt:formatDate type="both" pattern="EEE, MMM dd, yyyy HH:mm" value="${workOrder.createTime}" /></p>
-<p><strong>Updated Last: </strong> <fmt:formatDate type="both" pattern="EEE, MMM dd, yyyy HH:mm" value="${workOrder.updateTime}" /></p>
+
+<div class="row mb-3">
+    <div class="col-sm-2 text-end"><strong>Type</strong></div>
+    <div class="col-sm-5">${workOrder.type}</div>
+</div>
+<div class="row mb-3">
+    <div class="col-sm-2 text-end"><strong>Status</strong></div>
+    <div class="col-sm-5">${workOrder.status}</div>
+</div>
+<div class="row mb-3">
+    <div class="col-sm-2 text-end"><strong>Customer</strong></div>
+    <div class="col-sm-5">${workOrder.customer.firstName} ${workOrder.customer.lastName}</div>
+</div>
+<div class="row mb-3">
+    <div class="col-sm-2 text-end"><strong>Address</strong></div>
+    <div class="col-sm-5">${workOrder.address.street} ${workOrder.address.city} ${workOrder.address.state} ${workOrder.address.zip}</div>
+</div>
+<div class="row mb-3">
+    <div class="col-sm-2 text-end"><strong>Created At</strong></div>
+    <div class="col-sm-5"><fmt:formatDate type="both" pattern="EEE, MMM dd, yyyy HH:mm" value="${workOrder.createTime}" /></div>
+</div>
+<div class="row mb-3">
+    <div class="col-sm-2 text-end"><strong>Updated At</strong></div>
+    <div class="col-sm-5"><fmt:formatDate type="both" pattern="EEE, MMM dd, yyyy HH:mm" value="${workOrder.updateTime}" /></div>
+</div>
 
 <h2>Assigned Employees</h2>
 
-<c:forEach items="${workOrder.employees}" var="employee">
-    <p>&emsp;<strong>${employee.firstName} ${employee.lastName}</strong>, ${employee.title}</p>
-</c:forEach>
+<c:if test="${not empty workOrder.employees}">
+    <c:forEach items="${workOrder.employees}" var="employee">
+        <div class="row mb-3">
+            <div class="col-sm-2 text-end"><strong>${employee.firstName} ${employee.lastName}</strong></div>
+            <div class="col-sm-5">${employee.title}</div>
+        </div>
+    </c:forEach>
+</c:if>
+<c:if test="${empty workOrder.employees}">
+    <div class="row mb-3">
+        <div class="col-sm-2 text-end"><strong>None Assigned</strong></div>
+    </div>
+</c:if>
+
 
 <h1>Notes</h1>
 
@@ -43,9 +73,9 @@
             let _jsonString = "";
 
             for(var key in data){
-                _jsonString += "<p><strong>" + data[key].createDate +
-                            "</strong> by " + data[key].employee.firstName + " " + data[key].employee.lastName +
-                            " - " + data[key].note + "</p>";
+                _jsonString += "<div class=\"alert alert-secondary p-2 m-1\" role=\"alert\"><strong>" + data[key].createDate +
+                            "</strong> <em>by " + data[key].employee.firstName + "</em> " + data[key].employee.lastName +
+                            " - " + data[key].note + "</div>";
             }
 
             $("#workOrderNotes").html(_jsonString);

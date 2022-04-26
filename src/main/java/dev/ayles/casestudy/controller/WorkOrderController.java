@@ -16,9 +16,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -49,8 +53,21 @@ public class WorkOrderController {
     }
 
     @PostMapping("/workorder/createSubmit")
-    public ModelAndView createWorkOrderSubmit(CreateWorkOrderForm form) throws Exception {
+    public ModelAndView createWorkOrderSubmit(@Valid CreateWorkOrderForm form, BindingResult bindingResult) throws Exception {
         ModelAndView response = new ModelAndView();
+
+        if(bindingResult.hasErrors()){
+            for (ObjectError error : bindingResult.getAllErrors()) {
+                log.info("Work order creation error: " + ((FieldError) error).getField() + " " + error.getDefaultMessage());
+            }
+            List<Customer> customers = customerService.getAllCustomers();
+            response.addObject("customers", customers);
+
+            response.addObject("form", form);
+            response.addObject("bindingResult", bindingResult);
+            response.setViewName("workorder/create");
+            return response;
+        }
 
         WorkOrder workOrder = new WorkOrder();
         workOrder.setType(form.getType());
