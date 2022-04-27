@@ -128,7 +128,9 @@
             success: function(data)
             {
                 $("#employeeId").val("");
-                $("#employeeIdSuccess").show().delay(1500).fadeOut();
+
+                location.reload();
+                // $("#employeeIdSuccess").show().delay(1500).fadeOut();
             }
         });
     });
